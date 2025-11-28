@@ -1,21 +1,112 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContextAlert from '../components/ContextAlert.astro';
-import Markdown from '../components/Markdown.astro';
-
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
-
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
+import ProspectDashboard from '../components/ProspectDashboard.astro';
 ---
 
-<Layout title="Welcome to Astro.">
-    <ContextAlert class="mb-8" />
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
-    </p>
+<Layout title="Assistant de relance prospects">
+    <section class="relative p-8 overflow-hidden bg-gradient-to-br from-primary/30 via-complementary/60 to-complementary rounded-3xl ring-1 ring-white/10">
+        <div class="max-w-3xl">
+            <p class="text-sm uppercase tracking-[0.3rem] text-white/70">Playbook de relance</p>
+            <h1 class="mt-3 text-4xl font-bold leading-tight sm:text-5xl">Organisez vos relances clients sans tableur</h1>
+            <p class="mt-4 text-lg text-white/80 sm:text-xl">
+                Priorisez vos prospects chauds, préparez la bonne accroche et planifiez la prochaine action directement depuis ce
+                tableau de bord.
+            </p>
+            <div class="flex flex-wrap gap-3 mt-6">
+                <a href="#tableau" class="btn btn-lg">Commencer une session de relance</a>
+                <a href="#scripts" class="btn btn-lg bg-white/10 text-white ring-1 ring-white/20">Scripts prêts à envoyer</a>
+            </div>
+            <ul class="grid gap-3 mt-6 text-sm text-white/80 sm:grid-cols-2">
+                <li class="flex items-center gap-2">
+                    <span class="inline-flex w-5 h-5 text-xs font-bold rounded-full bg-white/20 text-primary-content items-center justify-center">1</span>
+                    Vue consolidée par priorité
+                </li>
+                <li class="flex items-center gap-2">
+                    <span class="inline-flex w-5 h-5 text-xs font-bold rounded-full bg-white/20 text-primary-content items-center justify-center">2</span>
+                    Relance planifiée en 1 clic
+                </li>
+                <li class="flex items-center gap-2">
+                    <span class="inline-flex w-5 h-5 text-xs font-bold rounded-full bg-white/20 text-primary-content items-center justify-center">3</span>
+                    Scripts email / téléphone alignés
+                </li>
+                <li class="flex items-center gap-2">
+                    <span class="inline-flex w-5 h-5 text-xs font-bold rounded-full bg-white/20 text-primary-content items-center justify-center">4</span>
+                    Checklist quotidienne intégrée
+                </li>
+            </ul>
+        </div>
+        <div class="absolute inset-0 opacity-30 bg-noise" aria-hidden="true"></div>
+    </section>
+
+    <section class="grid gap-4 mt-10 sm:grid-cols-3">
+        <div class="p-5 rounded-2xl bg-white/5 ring-1 ring-white/10">
+            <p class="text-sm uppercase tracking-[0.15rem] text-white/60">Alignement</p>
+            <h2 class="mt-2 text-2xl font-semibold">Objectifs clairs</h2>
+            <p class="mt-2 text-sm text-white/80">Listez l&#39;objectif de chaque relance : démo, validation budget, accord juridique ou signature.</p>
+        </div>
+        <div class="p-5 rounded-2xl bg-white/5 ring-1 ring-white/10">
+            <p class="text-sm uppercase tracking-[0.15rem] text-white/60">Priorisation</p>
+            <h2 class="mt-2 text-2xl font-semibold">Vues intelligentes</h2>
+            <p class="mt-2 text-sm text-white/80">Filtrez par température, canal ou date pour attaquer les urgences avant les suivis légers.</p>
+        </div>
+        <div class="p-5 rounded-2xl bg-white/5 ring-1 ring-white/10">
+            <p class="text-sm uppercase tracking-[0.15rem] text-white/60">Exécution</p>
+            <h2 class="mt-2 text-2xl font-semibold">Scripts d&#39;accroche</h2>
+            <p class="mt-2 text-sm text-white/80">Copiez-coller des messages contextualisés, adaptés au canal, pour gagner du temps.</p>
+        </div>
+    </section>
+
+    <div class="mt-10">
+        <ProspectDashboard />
+    </div>
+
+    <section id="scripts" class="grid gap-6 mt-12 sm:grid-cols-2">
+        <div class="p-6 rounded-2xl bg-white/5 ring-1 ring-white/10">
+            <p class="text-sm uppercase tracking-[0.2rem] text-white/60">Script email chaud</p>
+            <h3 class="mt-2 text-2xl font-semibold">Relancer après une démo</h3>
+            <p class="mt-2 text-sm text-white/80">Objet : « Suite à la démo : validation finale »</p>
+            <ul class="mt-4 space-y-2 text-sm text-white/80 list-disc list-inside">
+                <li>Rappeler le résultat attendu en une phrase.</li>
+                <li>Proposer un créneau précis (2 options) pour la validation.</li>
+                <li>Inclure un lien vers le récap ou la proposition envoyée.</li>
+            </ul>
+            <p class="mt-4 text-sm text-white/70">Accroche : « Nous pouvons livrer [impact] dès [date]. Validez-vous cette étape ensemble ? »</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-white/5 ring-1 ring-white/10">
+            <p class="text-sm uppercase tracking-[0.2rem] text-white/60">Script téléphone tiède</p>
+            <h3 class="mt-2 text-2xl font-semibold">Reprendre un lead en attente</h3>
+            <p class="mt-2 text-sm text-white/80">Pitch express en 20 secondes :</p>
+            <ul class="mt-4 space-y-2 text-sm text-white/80 list-disc list-inside">
+                <li>« Nous venons d&#39;aider [client] à [résultat mesurable]. »</li>
+                <li>« Vous aviez noté [objectif]. Est-ce toujours d&#39;actualité côté équipe ? »</li>
+                <li>« J&#39;ai deux créneaux cette semaine pour valider les étapes suivantes. »</li>
+            </ul>
+            <p class="mt-4 text-sm text-white/70">Note : évitez les questions fermées, poussez vers l&#39;action suivante.</p>
+        </div>
+    </section>
+
+    <section id="process" class="mt-12 p-6 rounded-2xl bg-white/5 ring-1 ring-white/10">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <p class="text-sm uppercase tracking-[0.2rem] text-white/60">Routine</p>
+                <h3 class="text-2xl font-semibold">Checklist quotidienne</h3>
+                <p class="mt-2 text-sm text-white/80">Une séquence en 5 minutes avant d&#39;ouvrir votre boîte mail.</p>
+            </div>
+            <a href="#tableau" class="btn">Lancer la routine</a>
+        </div>
+        <div class="grid gap-4 mt-6 sm:grid-cols-3">
+            <div class="p-4 rounded-xl bg-complementary/60 ring-1 ring-white/10">
+                <p class="text-sm font-semibold">1. Préparer</p>
+                <p class="mt-2 text-sm text-white/80">Filtrer les « Chaudes », définir l&#39;objectif et le CTA de chaque relance.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-complementary/60 ring-1 ring-white/10">
+                <p class="text-sm font-semibold">2. Exécuter</p>
+                <p class="mt-2 text-sm text-white/80">Relancer de 9h à 11h, puis consigner la date dans le tableau.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-complementary/60 ring-1 ring-white/10">
+                <p class="text-sm font-semibold">3. Suivre</p>
+                <p class="mt-2 text-sm text-white/80">Envoyer un résumé aux parties prenantes et planifier le rappel suivant.</p>
+            </div>
+        </div>
+    </section>
 </Layout>

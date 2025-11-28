@@ -1,0 +1,252 @@
+---
+const prospects = [
+    {
+        id: 1,
+        nom: 'Sophie Martin',
+        entreprise: 'NovaTech',
+        statut: 'Chaude',
+        canal: 'Email',
+        prochaineRelance: '2024-07-10',
+        objectif: 'Proposer une démo centrée sur les équipes support',
+        derniereAction: '2024-07-02'
+    },
+    {
+        id: 2,
+        nom: 'Yanis Dupont',
+        entreprise: 'Atlas Conseil',
+        statut: 'Tiède',
+        canal: 'Téléphone',
+        prochaineRelance: '2024-07-08',
+        objectif: 'Confirmer le budget et le calendrier',
+        derniereAction: '2024-06-28'
+    },
+    {
+        id: 3,
+        nom: 'Clara Besson',
+        entreprise: 'MoveUp',
+        statut: 'Froide',
+        canal: 'LinkedIn',
+        prochaineRelance: '2024-07-15',
+        objectif: 'Envoyer un cas client logistique',
+        derniereAction: '2024-06-20'
+    },
+    {
+        id: 4,
+        nom: 'Lucas Leroy',
+        entreprise: 'Helios Finance',
+        statut: 'Chaude',
+        canal: 'Email',
+        prochaineRelance: '2024-07-06',
+        objectif: 'Valider la proposition envoyée',
+        derniereAction: '2024-07-01'
+    }
+];
+---
+
+<section id="tableau" class="p-6 rounded-2xl bg-white/5 ring-1 ring-white/10 backdrop-blur">
+    <div class="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <p class="text-sm uppercase tracking-[0.2rem] text-white/70">Tableau opérationnel</p>
+            <h2 class="mt-1 text-3xl font-bold sm:text-4xl">Planifiez vos relances sans rien oublier</h2>
+            <p class="mt-2 text-white/70 sm:max-w-2xl">
+                Triez vos prospects par priorité, programmez la prochaine action et suivez l&#39;historique au même endroit.
+                Tout est prêt pour relancer en quelques clics.
+            </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <div class="px-3 py-2 text-sm rounded-lg bg-primary/20 text-primary-content ring-1 ring-primary/40">
+                Saisie guidée
+            </div>
+            <div class="px-3 py-2 text-sm rounded-lg bg-primary/20 text-primary-content ring-1 ring-primary/40">
+                Rappels prioritaires
+            </div>
+        </div>
+    </div>
+
+    <div class="grid gap-4 mb-4 sm:grid-cols-3">
+        <label class="flex flex-col gap-2 p-4 rounded-xl bg-white/5 ring-1 ring-white/10">
+            <span class="text-sm text-white/70">Filtrer par statut</span>
+            <select data-filter class="p-3 text-base rounded-lg bg-complementary/50 ring-1 ring-white/10">
+                <option value="tous">Tous les prospects</option>
+                <option value="Chaude">Chaude</option>
+                <option value="Tiède">Tiède</option>
+                <option value="Froide">Froide</option>
+            </select>
+        </label>
+        <label class="flex flex-col gap-2 p-4 rounded-xl bg-white/5 ring-1 ring-white/10">
+            <span class="text-sm text-white/70">Tri</span>
+            <select data-sort class="p-3 text-base rounded-lg bg-complementary/50 ring-1 ring-white/10">
+                <option value="date">Prochaine relance</option>
+                <option value="priorite">Priorité (statut)</option>
+                <option value="nom">Nom du prospect</option>
+            </select>
+        </label>
+        <div class="p-4 rounded-xl bg-white/5 ring-1 ring-white/10">
+            <p class="text-sm text-white/70">Conseil d&#39;exécution</p>
+            <p class="mt-2 text-sm">
+                Passez les relances « Chaudes » le matin, gardez les « Tièdes » pour l&#39;après-midi, puis terminez par les suivis
+                légers. Utilisez les scripts prêts à l&#39;emploi pour aller vite.
+            </p>
+        </div>
+    </div>
+
+    <div class="overflow-hidden border border-white/10 rounded-xl">
+        <table class="w-full text-left border-separate border-spacing-0">
+            <thead class="bg-white/5">
+                <tr>
+                    <th class="px-4 py-3 text-sm font-semibold text-white/80">Prospect</th>
+                    <th class="px-4 py-3 text-sm font-semibold text-white/80">Statut</th>
+                    <th class="px-4 py-3 text-sm font-semibold text-white/80">Canal</th>
+                    <th class="px-4 py-3 text-sm font-semibold text-white/80">Prochaine relance</th>
+                    <th class="px-4 py-3 text-sm font-semibold text-white/80">Objectif</th>
+                    <th class="px-4 py-3 text-sm font-semibold text-white/80">Actions</th>
+                </tr>
+            </thead>
+            <tbody data-rows class="bg-white/5"></tbody>
+        </table>
+    </div>
+
+    <div class="flex flex-col gap-4 mt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p data-feedback class="text-sm text-white/80">
+            Sélectionnez un prospect et cliquez sur « Relancé aujourd&#39;hui » pour reprogrammer automatiquement la prochaine
+            étape.
+        </p>
+        <div class="flex gap-2" data-stats></div>
+    </div>
+
+    <script type="application/json" id="prospect-data">{JSON.stringify(prospects)}</script>
+    <script>
+        const dataEl = document.getElementById('prospect-data');
+        const rows = document.querySelector('[data-rows]');
+        const filterSelect = document.querySelector('[data-filter]');
+        const sortSelect = document.querySelector('[data-sort]');
+        const feedback = document.querySelector('[data-feedback]');
+        const stats = document.querySelector('[data-stats]');
+
+        const badges = {
+            Chaude: 'bg-rose-200/20 text-rose-100 ring-1 ring-rose-200/40',
+            Tiède: 'bg-amber-200/20 text-amber-100 ring-1 ring-amber-200/40',
+            Froide: 'bg-sky-200/20 text-sky-100 ring-1 ring-sky-200/40'
+        };
+
+        const rawProspects = JSON.parse(dataEl?.textContent || '[]');
+        let state = [...rawProspects];
+
+        const formatDate = (dateStr) => {
+            const date = new Date(dateStr);
+            return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: '2-digit' }).format(date);
+        };
+
+        const getPriorityScore = (statut) => ({ Chaude: 3, Tiède: 2, Froide: 1 })[statut] || 0;
+
+        const renderStats = (list) => {
+            const urgent = list.filter((prospect) => new Date(prospect.prochaineRelance) <= new Date()).length;
+            const chaudes = list.filter((prospect) => prospect.statut === 'Chaude').length;
+            const froides = list.filter((prospect) => prospect.statut === 'Froide').length;
+
+            stats.innerHTML = '';
+            [
+                { label: 'À relancer aujourd\'hui', value: urgent },
+                { label: 'Pistes chaudes', value: chaudes },
+                { label: 'Suivis légers', value: froides }
+            ].forEach((item) => {
+                const chip = document.createElement('div');
+                chip.className = 'px-3 py-2 text-sm rounded-lg bg-white/5 ring-1 ring-white/10';
+                chip.innerHTML = `<span class="text-white/60">${item.label}:</span> <strong>${item.value}</strong>`;
+                stats.appendChild(chip);
+            });
+        };
+
+        const render = () => {
+            if (!rows) return;
+            const filter = filterSelect?.value || 'tous';
+            const sort = sortSelect?.value || 'date';
+            const today = new Date();
+
+            let list = [...state];
+            if (filter !== 'tous') {
+                list = list.filter((prospect) => prospect.statut === filter);
+            }
+
+            list.sort((a, b) => {
+                if (sort === 'nom') return a.nom.localeCompare(b.nom);
+                if (sort === 'priorite') return getPriorityScore(b.statut) - getPriorityScore(a.statut);
+                return new Date(a.prochaineRelance) - new Date(b.prochaineRelance);
+            });
+
+            rows.innerHTML = '';
+
+            list.forEach((prospect) => {
+                const isLate = new Date(prospect.prochaineRelance) <= today;
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-white/5 last:border-none';
+                tr.innerHTML = `
+                    <td class="px-4 py-3 align-top">
+                        <div class="font-semibold">${prospect.nom}</div>
+                        <div class="text-sm text-white/70">${prospect.entreprise}</div>
+                        <div class="text-xs text-white/60 mt-1">Dernière action : ${formatDate(prospect.derniereAction)}</div>
+                    </td>
+                    <td class="px-4 py-3 align-top">
+                        <span class="inline-flex items-center gap-1 px-3 py-1 text-sm rounded-full ${badges[prospect.statut]}">
+                            <span class="inline-block w-2 h-2 rounded-full bg-white/70"></span>
+                            ${prospect.statut}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 align-top">${prospect.canal}</td>
+                    <td class="px-4 py-3 align-top ${isLate ? 'text-rose-100' : 'text-white'}">
+                        ${formatDate(prospect.prochaineRelance)}
+                        ${isLate ? '<div class="text-xs text-rose-200">À traiter en priorité</div>' : ''}
+                    </td>
+                    <td class="px-4 py-3 align-top">${prospect.objectif}</td>
+                    <td class="px-4 py-3 align-top">
+                        <div class="flex flex-col gap-2 text-sm">
+                            <button data-action="relance" data-id="${prospect.id}" class="px-3 py-2 text-sm font-semibold rounded-lg bg-primary text-primary-content">Relancé aujourd'hui</button>
+                            <button data-action="plus3" data-id="${prospect.id}" class="px-3 py-2 text-sm rounded-lg bg-white/10 hover:bg-white/20">Décaler +3 jours</button>
+                        </div>
+                    </td>
+                `;
+                rows.appendChild(tr);
+            });
+
+            renderStats(list);
+        };
+
+        const updateNextRelance = (prospect, days) => {
+            const current = new Date();
+            const next = new Date(current);
+            next.setDate(current.getDate() + days);
+            prospect.derniereAction = current.toISOString();
+            prospect.prochaineRelance = next.toISOString();
+        };
+
+        const onClick = (event) => {
+            const target = event.target.closest('button[data-action]');
+            if (!target) return;
+
+            const id = Number(target.getAttribute('data-id'));
+            const action = target.getAttribute('data-action');
+            const prospect = state.find((item) => item.id === id);
+            if (!prospect) return;
+
+            if (action === 'relance') {
+                const increment = prospect.statut === 'Chaude' ? 2 : prospect.statut === 'Tiède' ? 5 : 7;
+                updateNextRelance(prospect, increment);
+                feedback.textContent = `${prospect.nom} est planifié(e) pour une nouvelle relance dans ${increment} jours.`;
+            }
+
+            if (action === 'plus3') {
+                const currentDate = new Date(prospect.prochaineRelance);
+                currentDate.setDate(currentDate.getDate() + 3);
+                prospect.prochaineRelance = currentDate.toISOString();
+                feedback.textContent = `${prospect.nom} a été décalé(e) de 3 jours.`;
+            }
+
+            render();
+        };
+
+        filterSelect?.addEventListener('change', render);
+        sortSelect?.addEventListener('change', render);
+        rows?.addEventListener('click', onClick);
+        render();
+    </script>
+</section>
